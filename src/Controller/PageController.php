@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+# Importacion ContactType
+use App\Form\ContactType;
 # Importación de librerias - Form
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -36,6 +38,21 @@ class PageController extends AbstractController
         }
 
         return $this->render('page/contact-v1.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/contactos-v2', methods:['GET', 'POST'])]
+    public function contactV2(Request $request): Response
+    {
+        $form = $this->createForm(ContactType::class);
+     
+        $form->handleRequest($request);
+        if( $form->isSubmitted()){
+            dd($form->getData(), $request);
+        }
+
+        return $this->render('page/contact-v2.html.twig', [
             'form' => $form->createView(),
         ]);
     }
